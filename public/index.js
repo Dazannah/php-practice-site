@@ -1,9 +1,12 @@
-function submitHandler() {
+async function submitHandler() {
   const dataToSend = getDataFromField()
   const isItOkToSend = validateDataToSend(dataToSend)
 
   if (isItOkToSend) {
-    sendData(dataToSend)
+    const response = await sendData(dataToSend)
+    response.json().then(responsedata => {
+      console.log(responsedata)
+    })
   }
 }
 
@@ -39,12 +42,12 @@ function validateDataToSend(dataToSend) {
 }
 
 async function sendData(dataToSend) {
-  const response = await fetch("/php-practice-site/php/register.php", {
+  const response = fetch("/php-practice-site/php/register.php", {
     method: "POST",
     body: dataToSend
   })
 
-  console.log(response)
+  return response
 }
 
 function handleError(error) {
