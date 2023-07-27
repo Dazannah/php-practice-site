@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./index.js"></script>
+    <title>Practice site</title>
+  </head>
+  <body>
+    <form id="register-form" onsubmit="event.preventDefault()">
+      <label for="username-input">Username:</label>
+      <input id="username-input" type="text" name="username" value="username" /><br />
+      <label for="password-input">Password:</label>
+      <input id="password-input" type="password" name="password" value="PASSWORD" /><br />
+      <label for="password-input-again">Password again:</label>
+      <input id="password-input-again" type="password" name="password-again" value="PASSWORD" /><br />
+      <label for="email-input">Password:</label>
+      <input id="email-input" type="text" name="email" value="email@email.asd" /><br />
+      <button onclick="submitHandler()">Submit</button>
+    </form>
+  </body>
+</html>
