@@ -1,5 +1,6 @@
 <?php
 require_once("./module/ValidateRegistration.php");
+require_once("./module/Database.php");
 //header("Location: /php-practice-site/public/home.html"); redirect the browser
 
 if(!isset($_POST["username"], $_POST["password"], $_POST["passwordAgain"], $_POST["email"])){
@@ -24,10 +25,13 @@ if(!$isValidationOk){
   exit();
 }
 
-header('Content-Type: application/json');
-$response = "success";
+$database = new Database($username, $password, $email);
+$saveResult = $database->save();
 
-$dataToSend = array("message" => $response);
+header('Content-Type: application/json');
+//$response = "success";
+
+$dataToSend = array("result" => $saveResult);
 echo json_encode($dataToSend);
 
 ?>
