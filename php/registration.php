@@ -1,7 +1,7 @@
 <?php
+
 require_once("./module/ValidateRegistration.php");
 require_once("./module/Database.php");
-//header("Location: /php-practice-site/public/home.html"); redirect the browser
 
 if(!isset($_POST["username"], $_POST["password"], $_POST["passwordAgain"], $_POST["email"])){
   header('Content-Type: application/json');
@@ -16,22 +16,29 @@ $passwordAgain = $_POST["passwordAgain"];
 $email = $_POST["email"];
 
 $validateRegistration = new ValidateRegistration($username, $password, $passwordAgain, $email);
-$isValidationOk = $validateRegistration->validate();
+$isAvailable = $validateRegistration->isUsernameTaken();
 
-if(!$isValidationOk){
+if(!$isAvailable){
   header('Content-Type: application/json');
   
   echo json_encode($validateRegistration->error);
   exit();
 }
 
-$database = new Database($username, $password, $email);
-$saveResult = $database->save();
+$isValidationOk = $validateRegistration->validate();
+
+if($isValidationOk){
+  header('Content-Type: application/json');
+  
+  echo json_encode($validateRegistration->error);
+  exit();
+}
+
+$saveUser = new SaveUser($username, $password, $email);
+$saveResult = $saveUser->runQuerry();
 
 header('Content-Type: application/json');
-//$response = "success";
 
-$dataToSend = array("result" => $saveResult);
-echo json_encode($dataToSend);
+echo json_encode($saveResult);
 
 ?>

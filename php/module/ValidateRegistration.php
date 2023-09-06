@@ -1,4 +1,7 @@
 <?php
+
+require_once("Database.php");
+
 class ValidateRegistration{
   public function __construct( $username, $password, $passwordAgain, $email) {
     $this->username = $username;
@@ -6,6 +9,21 @@ class ValidateRegistration{
     $this->passwordAgain = $passwordAgain;
     $this->email = $email;
     $this->error = [];
+  }
+
+  public function isUsernameTaken(){
+    try{
+      $finduser = new FindUser($this->username);
+      $result = $finduser->runQuerry();
+
+      if(mysqli_num_rows($result) > 0){
+        array_push($this->error, "Useranme is already taken"); 
+      }
+  
+      return $this->checkIfAnyError();
+    }catch(Exepsion $err){
+      echo $err->getMessage();
+    }
   }
 
   public function validate(){
@@ -20,6 +38,10 @@ class ValidateRegistration{
     $emailRegex = "/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,4}$/";
     if (!preg_match($emailRegex, $this->email)) array_push($this->error, "You must provide a valid e-mail address.");
 
+    $this->checkIfAnyError();
+  }
+
+  function checkIfAnyError(){
     if(count($this->error)>0){
       return false;
     }else{
