@@ -16,9 +16,10 @@ $passwordAgain = $_POST["passwordAgain"];
 $email = $_POST["email"];
 
 $validateRegistration = new ValidateRegistration($username, $password, $passwordAgain, $email);
-$isAvailable = $validateRegistration->isUsernameTaken();
+$isUsernameAvailable = $validateRegistration->isUsernameTaken();
+$isEmailAvailable = $validateRegistration->isEmailTaken();
 
-if(!$isAvailable){
+if(!$isUsernameAvailable || !$isEmailAvailable){
   header('Content-Type: application/json');
   
   echo json_encode($validateRegistration->error);

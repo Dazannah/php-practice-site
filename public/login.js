@@ -1,8 +1,10 @@
-// /php-practice-site/php/login.php
-
 async function loginHandler() {
   const dataToSend = getDataFromFields()
   const response = await sendData(dataToSend)
+
+  if (response.status === true) {
+    window.location.href = "/php-practice-site/php/home.php"
+  }
 }
 
 function getDataFromFields() {
@@ -22,9 +24,5 @@ async function sendData(dataToSend) {
     body: formData
   })
 
-  const jsonResponse = await response.json()
-  console.log(jsonResponse.status)
-  if (jsonResponse.status === true) {
-    window.location.href = "/php-practice-site/php/home.php"
-  }
+  return await response.json()
 }

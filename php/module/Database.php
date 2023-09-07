@@ -46,6 +46,18 @@ class FindUserByUsername extends Database{
   }
 }
 
+class FindUserByEmail extends Database{
+  function __construct($email) {
+    parent::__construct();
+
+    $this->query = "SELECT email FROM users WHERE email='$email'";
+  }
+
+  function __destruct(){
+    parent::__destruct();
+  }
+}
+
 class SaveUser extends Database{
     function __construct($username, $password, $email) {
       parent::__construct();

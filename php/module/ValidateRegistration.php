@@ -26,6 +26,21 @@ class ValidateRegistration{
     }
   }
 
+  public function isEmailTaken(){
+    try{
+      $finduserEmail = new FindUserByEmail($this->email);
+      $result = $finduserEmail->runQuerry();
+
+      if(mysqli_num_rows($result) > 0){
+        array_push($this->error, "Email is already taken"); 
+      }
+  
+      return $this->checkIfAnyError();
+    }catch(Exepsion $err){
+      echo $err->getMessage();
+    }
+  }
+
   public function validate(){
 
     if (trim($this->username) === "") array_push($this->error, "You must provide a username.");
