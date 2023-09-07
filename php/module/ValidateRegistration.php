@@ -13,7 +13,7 @@ class ValidateRegistration{
 
   public function isUsernameTaken(){
     try{
-      $finduser = new FindUser($this->username);
+      $finduser = new FindUserByUsername($this->username);
       $result = $finduser->runQuerry();
 
       if(mysqli_num_rows($result) > 0){

@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="/php-practice-site/public/login.js"></script>
     <title>Index</title>
   </head>
   <body>
@@ -13,10 +14,10 @@
       </ul>
     </nav>
 
-    <form action="/php-practice-site/php/login.php" method="POST">
-      <input type="text" name="username" id="username" placeholder="Username" required value="asd" />
-      <input type="password" name="password" id="password" placeholder="Password" required value="asd" />
-      <input type="submit" value="Login" />
+    <form id="login-form" onsubmit="event.preventDefault()">
+      <input id="username" type="text" name="username" id="username" placeholder="Username" required value="username" />
+      <input id="password" type="password" name="password" id="password" placeholder="Password" required value="P@ssword1" />
+      <button onclick="loginHandler()">Login</button>
     </form>
   </body>
 </html>

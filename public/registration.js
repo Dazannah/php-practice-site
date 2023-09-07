@@ -6,13 +6,16 @@ async function registrationHandler() {
     try {
       const response = await sendData(dataToSend)
 
-      const responsedata = await response.text()
-      console.log(responsedata)
+      const responsedata = await response.json()
+
+      if (responsedata === true) {
+        window.location.href = "../index.html?registration=successful"
+      } else {
+        handleError(responsedata)
+      }
     } catch (err) {
       console.log(err)
     }
-  } else {
-    console.log("Error")
   }
 }
 
@@ -66,5 +69,12 @@ async function sendData(dataToSend) {
 }
 
 function handleError(error) {
-  alert(error)
+  const errorSpan = document.getElementById("error-span")
+  let errorMessage = ""
+
+  error.forEach(error => {
+    errorMessage += `${error}<br>`
+  })
+
+  errorSpan.innerHTML = errorMessage
 }
