@@ -30,11 +30,11 @@ function getDataFromField() {
 function validateDataToSend(dataToSend) {
   const error = []
 
-  if (dataToSend.username === null || dataToSend.username === undefined || dataToSend.username.trim() === "") error.push("You must provide a username.")
-  if (dataToSend.password === null || dataToSend.password === undefined || dataToSend.password.trim() === "") error.push("You must provide a password.")
+  if (dataToSend.username == null || dataToSend.username.trim() === "") error.push("You must provide a username.")
+  if (dataToSend.password == null || dataToSend.password.trim() === "") error.push("You must provide a password.")
   if (dataToSend.password != dataToSend.passwordAgain) error.push("The two password is different.")
 
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!_])(?!.*\s).{8,}$/
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!,_])(?!.*\s).{8,}$/
   if (!passwordRegex.test(dataToSend.password)) error.push("At least one upper case letter, a number and a special character have to be used in the password")
 
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/

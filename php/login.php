@@ -11,8 +11,8 @@ if(!isset($_POST["username"], $_POST["password"])){
 $username = $_POST["username"];
 $password = $_POST["password"];
 
-$findUserWIthUsernamePassword = new FindUserWIthUsernamePassword($username, $password);
-$result = $findUserWIthUsernamePassword->runQuerry();
+$database = new Database();
+$result = $database -> findUserWIthUsernamePassword($username, $password);
 
 if(mysqli_num_rows($result) < 1){
   header('Content-Type: application/json');

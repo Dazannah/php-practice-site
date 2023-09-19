@@ -19,68 +19,48 @@ class Database{
     $this->connection->close();
   }
 
-  public function runQuerry(){
+  public function runQuerry($query){
     try{
-      $result = $this->connection->query($this->query);
+        return $this->connection->query($query);
 
-      if (!$result) {
-        throw new Exception("Error executing the SQL query: " . $this->connection->error);
-      }else{
-        return $result;
-      }
     }catch(Exception $err){
-      return  $err;
+      return  new Exception ($err -> getMessage());
     }
   }
-}
 
-class FindUserByUsername extends Database{
-  function __construct($username) {
-    parent::__construct();
+  public function findUserByUsername($username){
+    $query = "SELECT username FROM users WHERE username='$username'";
 
-    $this->query = "SELECT username FROM users WHERE username='$username'";
+    return $this -> runQuerry($query);
   }
 
-  function __destruct(){
-    parent::__destruct();
-  }
-}
+  public function FindUserByEmail($email) {
+    $query = "SELECT email FROM users WHERE email='$email'";
 
-class FindUserByEmail extends Database{
-  function __construct($email) {
-    parent::__construct();
-
-    $this->query = "SELECT email FROM users WHERE email='$email'";
+    return $this -> runQuerry($query);
   }
 
-  function __destruct(){
-    parent::__destruct();
-  }
-}
-
-class SaveUser extends Database{
-    function __construct($username, $password, $email) {
-      parent::__construct();
-
-      $passwordHash = md5($password);
-      $this->query = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$passwordHash')";
-  }
-
-  function __destruct(){
-    parent::__destruct();
-  }
-}
-
-class FindUserWIthUsernamePassword extends Database{
-  function __construct($username, $password) {
-    parent::__construct();
-
+  public function SaveUser($username, $password, $email) {
     $passwordHash = md5($password);
-    $this->query = "SELECT username, email FROM users WHERE username='$username' AND password='$passwordHash'";
-}
+    $randomHash = md5(random_bytes(25));
 
-  function __destruct(){
-    parent::__destruct();
+    $query = "INSERT INTO users (username, email, password, randomhash) VALUES ('$username', '$email', '$passwordHash', '$randomHash')";
+
+    return $this -> runQuerry($query);
+  }
+
+  public function FindUserWIthUsernamePassword($username, $password) {
+    $passwordHash = md5($password);
+    
+    $query = "SELECT username, email FROM users WHERE username='$username' AND password='$passwordHash'";
+
+    return $this -> runQuerry($query);
+  }
+
+  public function ConfirmUserRegistration($randomHash) {
+    $query = "UPDATE users SET confirmed=1 WHERE randomhash='$randomHash'";
+
+    return $this -> runQuerry($query);
   }
 }
 

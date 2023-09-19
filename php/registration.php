@@ -35,8 +35,8 @@ if($isValidationOk){
   exit();
 }
 
-$saveUser = new SaveUser($username, $password, $email);
-$saveResult = $saveUser->runQuerry();
+$database = new Database();
+$saveResult = $database -> saveUser($username, $password, $email);
 
 header('Content-Type: application/json');
 
