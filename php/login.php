@@ -1,5 +1,5 @@
 <?php 
-require_once("./module/Database.php");
+require_once("./module/User.php");
 
 if(!isset($_POST["username"], $_POST["password"])){
   header('Content-Type: application/json');
@@ -11,16 +11,8 @@ if(!isset($_POST["username"], $_POST["password"])){
 $username = $_POST["username"];
 $password = $_POST["password"];
 
-$database = new Database();
-$result = $database -> findUserWIthUsernamePassword($username, $password);
-
-if(mysqli_num_rows($result) < 1){
-  header('Content-Type: application/json');
-
-  echo json_encode("Invalid username/password.");
-  exit();
-}
-$fetchedData = $result->fetch_assoc();
+$loginUser = new LoginUser($username, $password);
+$fetchedData = $loginUser->loginProcess();
 
 session_start();
 

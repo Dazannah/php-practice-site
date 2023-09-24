@@ -24,7 +24,7 @@ class Database{
         return $this->connection->query($query);
 
     }catch(Exception $err){
-      return  new Exception ($err -> getMessage());
+      return  $err -> getMessage();
     }
   }
 

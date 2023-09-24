@@ -6,6 +6,7 @@ async function registrationHandler() {
     try {
       const response = await sendData(dataToSend)
       const responsedata = await response.json()
+      console.log(response)
 
       if (responsedata === true) {
         window.location.href = "../index.html?message=successful-registration"

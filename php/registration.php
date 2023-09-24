@@ -1,7 +1,6 @@
 <?php
 
-require_once("./module/ValidateRegistration.php");
-require_once("./module/Database.php");
+require_once("./module/User.php");
 
 if(!isset($_POST["username"], $_POST["password"], $_POST["passwordAgain"], $_POST["email"])){
   header('Content-Type: application/json');
@@ -15,31 +14,11 @@ $password = $_POST["password"];
 $passwordAgain = $_POST["passwordAgain"];
 $email = $_POST["email"];
 
-$validateRegistration = new ValidateRegistration($username, $password, $passwordAgain, $email);
-$isUsernameAvailable = $validateRegistration->isUsernameTaken();
-$isEmailAvailable = $validateRegistration->isEmailTaken();
-
-if(!$isUsernameAvailable || !$isEmailAvailable){
-  header('Content-Type: application/json');
-  
-  echo json_encode($validateRegistration->error);
-  exit();
-}
-
-$isValidationOk = $validateRegistration->validate();
-
-if($isValidationOk){
-  header('Content-Type: application/json');
-  
-  echo json_encode($validateRegistration->error);
-  exit();
-}
-
-$database = new Database();
-$saveResult = $database -> saveUser($username, $password, $email);
+$registerUser = new RegisterUser($username, $email, $password, $passwordAgain);
+$result = $registerUser->registrationProcess();
 
 header('Content-Type: application/json');
 
-echo json_encode($saveResult);
+echo json_encode($result);
 
 ?>
