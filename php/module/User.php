@@ -14,10 +14,10 @@ require_once("Database.php");
   class LoginUser extends User{
     protected $password;
 
-    public function __construct($username, $password) {
-      parent::__construct($username);
+    public function __construct($user) {
+      parent::__construct($user -> username);
 
-      $this->password = $password;
+      $this->password = $user -> password;
     }
 
     public function loginProcess(){
@@ -40,12 +40,12 @@ require_once("Database.php");
     protected $password;
     protected $passwordAgain;
 
-    public function __construct($username, $email, $password, $passwordAgain){
-      parent::__construct($username);
+    public function __construct($user){
+      parent::__construct($user -> username);
 
-      $this->email = $email;
-      $this->password = $password;
-      $this->passwordAgain = $passwordAgain;
+      $this->email = $user -> email;
+      $this->password = $user -> password;
+      $this->passwordAgain = $user -> passwordAgain;
     }
 
     private function isUsernameTaken(){
