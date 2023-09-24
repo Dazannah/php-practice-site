@@ -3,20 +3,28 @@ require_once("Database.php");
 
   class User{
     protected $username;
-    protected $error = [];
+    protected $email;
 
-    public function __construct($username) {
+    public function __construct($username, $email) {
       $this->username = $username;
-      $this->error = [];
+      $this->email = $email;
+    }
+
+    public function username(){
+      return $this -> username;
+    }
+
+    public function email(){
+      return $this -> email;
     }
   }
 
-  class LoginUser extends User{
+  class LoginUser{
+    protected $username;
     protected $password;
 
     public function __construct($user) {
-      parent::__construct($user -> username);
-
+      $this -> username = $user -> username;
       $this->password = $user -> password;
     }
 
@@ -35,17 +43,19 @@ require_once("Database.php");
     }
   }
 
-  class RegisterUser extends User{
+  class RegisterUser{
+    protected $username;
     protected $email;
     protected $password;
     protected $passwordAgain;
+    protected $error = [];
 
     public function __construct($user){
-      parent::__construct($user -> username);
-
+      $this->username = $user -> username;
       $this->email = $user -> email;
       $this->password = $user -> password;
       $this->passwordAgain = $user -> passwordAgain;
+      $this->error = [];
     }
 
     private function isUsernameTaken(){
