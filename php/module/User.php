@@ -58,6 +58,26 @@ require_once("Database.php");
       $this->error = [];
     }
 
+    public function registrationProcess(){
+      $isUsernameAvailable = $this->isUsernameTaken();
+      $isEmailAvailable = $this->isEmailTaken();
+
+      if(!$isUsernameAvailable || !$isEmailAvailable){
+        return $this->error;
+      }
+
+      $isValidationOk = $this->validate();
+
+      if($isValidationOk){
+        return $this->error;
+      }
+
+      $database = new Database();
+      $saveResult = $database -> saveUser($this->username, $this->password, $this->email);
+
+      return $saveResult;
+    }
+
     private function isUsernameTaken(){
       try{
         $databse = new Database();
@@ -109,26 +129,6 @@ require_once("Database.php");
       }else{
         return true;
       }
-    }
-
-    public function registrationProcess(){
-      $isUsernameAvailable = $this->isUsernameTaken();
-      $isEmailAvailable = $this->isEmailTaken();
-
-      if(!$isUsernameAvailable || !$isEmailAvailable){
-        return $this->error;
-      }
-
-      $isValidationOk = $this->validate();
-
-      if($isValidationOk){
-        return $this->error;
-      }
-
-      $database = new Database();
-      $saveResult = $database -> saveUser($this->username, $this->password, $this->email);
-
-      return $saveResult;
     }
   }
 ?>
