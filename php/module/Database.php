@@ -40,9 +40,8 @@ class Database{
     return $this -> runQuerry($query);
   }
 
-  public function SaveUser($username, $password, $email) {
+  public function SaveUser($username, $password, $email, $randomHash) {
     $passwordHash = md5($password);
-    $randomHash = md5(random_bytes(25));
 
     $query = "INSERT INTO users (username, email, password, randomhash) VALUES ('$username', '$email', '$passwordHash', '$randomHash')";
 

@@ -11,20 +11,37 @@ require_once("Database.php");
     }
 
     public function addProperty($propertyName, $propertyValue){
-      $this-> properties[$propertyName] = $propertyValue;
+      if(isset($this-> properties[$propertyName])){
+        return false;
+      }else{
+        $this-> properties[$propertyName];
+      }
+      //$this-> properties[$propertyName] = $propertyValue;
+    }
+
+    public function updateProperty($propertyName, $propertyValue){
+      if(isset($this-> properties[$propertyName])){
+        $this-> properties[$propertyName];
+      }else{
+        return false;
+      }
     }
 
     public function getProperty($propertyName){
       if(isset($this-> properties[$propertyName])){
         return $this-> properties[$propertyName];
       }else{
-        return "Property don't exist.";
+        return false;
       }
 
     }
 
     public function deleteProperty($propertyName){
-      unset($this-> properties[$propertyName]);
+      if(isset($this-> properties[$propertyName])){
+        unset($this-> properties[$propertyName]);
+      }else{
+        return false;
+      }
     }
 
     public function getAllProperties(){
@@ -76,8 +93,10 @@ require_once("Database.php");
         return $this->error;
       }
 
+      $randomHash = md5(random_bytes(25));
+
       $database = new Database();
-      $saveResult = $database -> saveUser($this->properties["username"], $this->properties["password"], $this->properties["email"]);
+      $saveResult = $database -> saveUser($this->properties["username"], $this->properties["password"], $this->properties["email"], $randomHash);
 
       return $saveResult;
     }
