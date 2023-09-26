@@ -2,35 +2,46 @@
 require_once("Database.php");
 
   class User{
-    protected $username;
-    protected $email;
+    protected $properties = array();
 
-    public function __construct($username, $email) {
-      $this->username = $username;
-      $this->email = $email;
+    public function __construct($initialProperies) {
+      foreach($initialProperies as $name => $value){
+        $this -> properties[$name] = $value;
+      }
     }
 
-    public function username(){
-      return $this -> username;
+    public function addProperty($propertyName, $propertyValue){
+      $this-> properties[$propertyName] = $propertyValue;
     }
 
-    public function email(){
-      return $this -> email;
+    public function getProperty($propertyName){
+      if(isset($this-> properties[$propertyName])){
+        return $this-> properties[$propertyName];
+      }else{
+        return "Property don't exist.";
+      }
+
     }
+
+    public function deleteProperty($propertyName){
+      unset($this-> properties[$propertyName]);
+    }
+
+    public function getAllProperties(){
+      return $this -> properties;
+    }
+
   }
 
-  class LoginUser{
-    protected $username;
-    protected $password;
+  class LoginUser extends User{
 
-    public function __construct($user) {
-      $this -> username = $user -> username;
-      $this->password = $user -> password;
+    public function __construct($initialProperies) {
+      parent::__construct($initialProperies);
     }
 
     public function loginProcess(){
       $database = new Database();
-      $result = $database -> findUserWIthUsernamePassword($this->username, $this->password);
+      $result = $database -> findUserWIthUsernamePassword($this->properties["username"], $this->properties["password"]);
 
       if(mysqli_num_rows($result) < 1){
         header('Content-Type: application/json');
@@ -43,19 +54,12 @@ require_once("Database.php");
     }
   }
 
-  class RegisterUser{
-    protected $username;
-    protected $email;
-    protected $password;
-    protected $passwordAgain;
+  class RegisterUser extends User{
+
     protected $error = [];
 
-    public function __construct($user){
-      $this->username = $user -> username;
-      $this->email = $user -> email;
-      $this->password = $user -> password;
-      $this->passwordAgain = $user -> passwordAgain;
-      $this->error = [];
+    public function __construct($initialProperies){
+      parent::__construct($initialProperies);
     }
 
     public function registrationProcess(){
@@ -73,7 +77,7 @@ require_once("Database.php");
       }
 
       $database = new Database();
-      $saveResult = $database -> saveUser($this->username, $this->password, $this->email);
+      $saveResult = $database -> saveUser($this->properties["username"], $this->properties["password"], $this->properties["email"]);
 
       return $saveResult;
     }
@@ -81,7 +85,7 @@ require_once("Database.php");
     private function isUsernameTaken(){
       try{
         $databse = new Database();
-        $result = $databse -> findUserByUsername($this->username);
+        $result = $databse -> findUserByUsername($this->properties["username"]);
   
         if(mysqli_num_rows($result) > 0){
           array_push($this->error, "Useranme is already taken"); 
@@ -96,7 +100,7 @@ require_once("Database.php");
     private function isEmailTaken(){
       try{
         $database = new Database();
-        $result = $database -> findUserByEmail($this->email);
+        $result = $database -> findUserByEmail($this->properties["email"]);
   
         if(mysqli_num_rows($result) > 0){
           array_push($this->error, "Email is already taken"); 
@@ -110,15 +114,15 @@ require_once("Database.php");
   
     private function validate(){
   
-      if (trim($this->username) === "") array_push($this->error, "You must provide a username.");
-      if (trim($this->password) === "") array_push($this->error, "You must provide a password.");
-      if ($this->password != $this->passwordAgain) array_push($this->error, "The two password is different.");
+      if (trim($this->properties["username"]) === "") array_push($this->error, "You must provide a username.");
+      if (trim($this->properties["password"]) === "") array_push($this->error, "You must provide a password.");
+      if ($this->properties["password"] != $this->properties["passwordAgain"]) array_push($this->error, "The two password is different.");
     
       $passwordRegex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!,_])(?!.*\s).{8,}$/";
-      if (!preg_match($passwordRegex, $this->password)) array_push($this->error, "At least one upper case letter, a number and a special character have to be used in the password");
+      if (!preg_match($passwordRegex, $this->properties["password"])) array_push($this->error, "At least one upper case letter, a number and a special character have to be used in the password");
     
       $emailRegex = "/^[\w\-\.]+@([\w-]+\.)+[\w-]{2,4}$/";
-      if (!preg_match($emailRegex, $this->email)) array_push($this->error, "You must provide a valid e-mail address.");
+      if (!preg_match($emailRegex, $this->properties["email"])) array_push($this->error, "You must provide a valid e-mail address.");
   
       $this->checkIfAnyError();
     }

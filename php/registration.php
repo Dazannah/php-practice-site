@@ -9,14 +9,14 @@ if(!isset($_POST["username"], $_POST["password"], $_POST["passwordAgain"], $_POS
   exit();
 }
 
-$user = (object) array(
+$userInputs = (object) array(
   "username" =>  $_POST["username"],
   "password" =>  $_POST["password"],
   "passwordAgain" =>  $_POST["passwordAgain"],
   "email" =>  $_POST["email"],
 );
 
-$registerUser = new RegisterUser($user);
+$registerUser = new RegisterUser($userInputs);
 $result = $registerUser->registrationProcess();
 
 header('Content-Type: application/json');

@@ -16,7 +16,7 @@ $userInputs = (object) array(
 $loginUser = new LoginUser($userInputs);
 $fetchedData = $loginUser->loginProcess();
 
-$user = new User($fetchedData['username'], $fetchedData['email']);
+$user = new User($fetchedData);
 
 session_start();
 

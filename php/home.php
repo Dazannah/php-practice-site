@@ -8,8 +8,8 @@ if(!isset($_SESSION['user'])){
 }
 
 $user = $_SESSION['user'];
-$username = $user -> username();
-$email = $user -> email();
+$username = $user -> getProperty("username");
+$email = $user -> getProperty("email");
 
 echo <<<EOT
 You are loged in as $username<br>
